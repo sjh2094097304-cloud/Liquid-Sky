@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- 太阳 -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M54,38m-10,0a10,10 0,1 1,20 0a10,10 0,1 1,-20 0" />
+    <!-- 太阳光芒 -->
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M54,20m-2,0a2,4 0,1 1,4 0a2,4 0,1 1,-4 0" />
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M54,56m-2,0a2,4 0,1 1,4 0a2,4 0,1 1,-4 0" />
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M36,38m-4,0a4,2 0,1 1,8 0a4,2 0,1 1,-8 0" />
+    <path
+        android:fillColor="#FFD54F"
+        android:pathData="M68,38m-4,0a4,2 0,1 1,8 0a4,2 0,1 1,-8 0" />
+    <!-- 云朵 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M40,62m-8,0a8,6 0,1 1,16 0a8,6 0,1 1,-16 0" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M56,58m-10,0a10,8 0,1 1,20 0a10,8 0,1 1,-20 0" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M68,64m-6,0a6,5 0,1 1,12 0a6,5 0,1 1,-12 0" />
+    <!-- 云底部连接 -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M34,62h40v8h-40z" />
+</vector>
