@@ -17,34 +17,11 @@ android {
         versionCode = 1
         versionName = "1.0.0"
 
-        /*
-         * QWeather API Key
-         *
-         * GitHub Actions:
-         *   secrets.QWEATHER_API_KEY
-         *
-         * 本地构建:
-         *   -PqweatherApiKey=你的Key
-         *
-         * 如果没有提供 Key，则使用空字符串。
-         */
-        val qweatherApiKey =
-            providers.gradleProperty("qweatherApiKey")
-                .orElse(
-                    providers.environmentVariable("QWEATHER_API_KEY")
-                )
-                .orElse("93f895b4620742efb89e6ad13cc770db")
-                .get()
+        // 和风天气 API Key — 请替换为你自己的 Key
+        // 获取地址: https://console.qweather.com/
+        buildConfigField("String", "QWEATHER_API_KEY", "\"YOUR_QWEATHER_API_KEY\"")
 
-        buildConfigField(
-            "String",
-            "QWEATHER_API_KEY",
-            "\"${qweatherApiKey.replace("\\", "\\\\").replace("\"", "\\\"")}\""
-        )
-
-        testInstrumentationRunner =
-            "androidx.test.runner.AndroidJUnitRunner"
-
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -54,15 +31,11 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-
             proguardFiles(
-                getDefaultProguardFile(
-                    "proguard-android-optimize.txt"
-                ),
+                getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
-
         debug {
             isMinifyEnabled = false
             applicationIdSuffix = ".debug"
@@ -73,20 +46,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-
     kotlinOptions {
         jvmTarget = "17"
     }
-
     buildFeatures {
         compose = true
         buildConfig = true
     }
-
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.14"
     }
-
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -95,13 +64,9 @@ android {
 }
 
 dependencies {
-
     // Compose BOM
-    val composeBom =
-        platform("androidx.compose:compose-bom:2024.09.00")
-
+    val composeBom = platform("androidx.compose:compose-bom:2024.09.00")
     implementation(composeBom)
-
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -149,20 +114,9 @@ dependencies {
     // Test
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation(
-        "androidx.test.espresso:espresso-core:3.6.1"
-    )
-
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
     androidTestImplementation(composeBom)
-    androidTestImplementation(
-        "androidx.compose.ui:ui-test-junit4"
-    )
-
-    debugImplementation(
-        "androidx.compose.ui:ui-tooling"
-    )
-
-    debugImplementation(
-        "androidx.compose.ui:ui-test-manifest"
-    )
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
