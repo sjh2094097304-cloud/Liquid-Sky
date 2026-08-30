@@ -17,9 +17,10 @@ android {
         versionCode = 1
         versionName = "1.0.0"
 
-        // 和风天气 API Key — 请替换为你自己的 Key
+        // 和风天气 API Key
+        // 优先从环境变量读取（GitHub Actions 用），没有则用占位符
         // 获取地址: https://console.qweather.com/
-        buildConfigField("String", "QWEATHER_API_KEY", "\"YOUR_QWEATHER_API_KEY\"")
+        buildConfigField("String", "QWEATHER_API_KEY", "\"${System.getenv("QWEATHER_API_KEY") ?: "93f895b4620742efb89e6ad13cc770db"}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

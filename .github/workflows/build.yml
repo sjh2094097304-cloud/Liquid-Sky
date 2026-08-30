@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
-
   workflow_dispatch:
 
 permissions:
@@ -20,18 +18,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      # ============================================================
-      # 1. Checkout
-      # ============================================================
-
+      # 1. Checkout 源码
       - name: Checkout source
         uses: actions/checkout@v4
 
-      # ============================================================
       # 2. JDK 17
-      # ============================================================
-
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -39,99 +30,63 @@ jobs:
           java-version: '17'
           cache: gradle
 
-      # ============================================================
-      # 3. Android SDK
-      # ============================================================
-
+      # 3. Android SDK（使用 setup-android action）
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      # ============================================================
-      # 4. Install Android SDK 36
-      # ============================================================
-
-      - name: Install Android SDK
+      # 4. 安装项目需要的 SDK 版本（compileSdk=35）
+      - name: Install Android SDK 35
         run: |
           sdkmanager "platform-tools"
-          sdkmanager "platforms;android-36"
-          sdkmanager "build-tools;36.0.0"
+          sdkmanager "platforms;android-35"
+          sdkmanager "build-tools;35.0.0"
 
-      # ============================================================
-      # 5. Verify environment
-      # ============================================================
+      # 5. 赋予 gradlew 执行权限
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
 
-      - name: Show environment
+      # 6. 验证环境
+      - name: Verify environment
         run: |
           java -version
           ./gradlew --version
-          adb version
-          sdkmanager --list_installed
 
-      # ============================================================
-      # 6. Grant Gradle execute permission
-      # ============================================================
-
-      - name: Make Gradle executable
-        run: |
-          chmod +x ./gradlew
-
-      # ============================================================
-      # 7. Clean project
-      # ============================================================
-
+      # 7. Clean
       - name: Clean
-        run: |
-          ./gradlew clean --stacktrace
+        run: ./gradlew clean --stacktrace
 
-      # ============================================================
-      # 8. Build Release APK
-      # ============================================================
-
+      # 8. 构建 Release APK
       - name: Build Release APK
         run: |
           ./gradlew assembleRelease \
             --stacktrace \
             --info
-
         env:
           QWEATHER_API_KEY: ${{ secrets.QWEATHER_API_KEY }}
 
-      # ============================================================
-      # 9. Find generated APK
-      # ============================================================
-
+      # 9. 查找生成的 APK
       - name: Find APK
         run: |
           echo "Generated APK files:"
           find app/build/outputs/apk -type f -name "*.apk" -print
 
-      # ============================================================
-      # 10. Rename APK
-      # ============================================================
-
+      # 10. 重命名并准备 APK
       - name: Prepare APK
         run: |
           mkdir -p release
-
           APK=$(find app/build/outputs/apk/release \
             -type f \
             -name "*.apk" \
             | head -n 1)
-
           if [ -z "$APK" ]; then
             echo "ERROR: Release APK was not generated."
             exit 1
           fi
-
           cp "$APK" "release/Liquid-Sky-${GITHUB_RUN_NUMBER}.apk"
-
           echo "Final APK:"
           ls -lh release/
 
-      # ============================================================
-      # 11. Upload APK
-      # ============================================================
-
+      # 11. 上传 APK 作为 Artifact
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
@@ -139,10 +94,7 @@ jobs:
           path: release/Liquid-Sky-${{ github.run_number }}.apk
           if-no-files-found: error
 
-      # ============================================================
-      # 12. Build summary
-      # ============================================================
-
+      # 12. 构建摘要
       - name: Build summary
         run: |
           echo "## 🌤️ Liquid Sky Build" >> "$GITHUB_STEP_SUMMARY"
